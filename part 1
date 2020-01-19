@@ -1,0 +1,36 @@
+const employeeArr =  [
+    { id: 1, name: 'moe'},
+    { id: 2, name: 'larry', managerId: 1},
+    { id: 4, name: 'shep', managerId: 2},
+    { id: 3, name: 'curly', managerId: 1},
+    { id: 5, name: 'groucho', managerId: 3},
+    { id: 6, name: 'harpo', managerId: 5},
+    { id: 8, name: 'shep Jr.', managerId: 4},
+    { id: 99, name: 'lucy', managerId: 1}
+  ]
+
+const findEmployeeByName = (empName, employees) => {
+    return employees.filter((element) => {
+        if (element.name === empName){
+          return element
+        }
+    })[0]
+}
+
+const findManagerFor = (empName, employees) => {
+  let emp = findEmployeeByName(empName, employees)
+  return employees.filter((element) => {
+    if (element.id === emp.managerId){
+      return element
+    }
+  })[0]
+}
+
+const findCoworkersFor = (empName, employees)=> {
+    let emp = findEmployeeByName(empName, employees)
+    return employees.filter((element) =>{ 
+      if (element.name !== emp.name && element.managerId === emp.managerId){
+        return element
+        }
+      })
+  }
