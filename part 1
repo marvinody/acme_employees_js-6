@@ -26,11 +26,27 @@ const findManagerFor = (empName, employees) => {
   })[0]
 }
 
+//findManagerFor('shep Jr.', employeeArr)
+
 const findCoworkersFor = (empName, employees)=> {
-    let emp = findEmployeeByName(empName, employees)
-    return employees.filter((element) =>{ 
-      if (element.name !== emp.name && element.managerId === emp.managerId){
-        return element
-        }
-      })
+  let emp = findEmployeeByName(empName, employees)
+  return employees.filter((element) =>{ 
+    if (element.name !== emp.name && element.managerId === emp.managerId){
+      return element
+      }
+    })
+}
+
+//findCoworkersFor('larry', employeeArr)
+
+const findManagementChainFor = (empName, employees) => {
+  //recursive case - manID = 1
+  if (findEmployeeByName(empName, employees).managerId === 1){
+    return findManagerFor(empName, employees)
   }
+  else man = findManagerFor(empName, employees)
+  return [man].concat(findManagementChainFor(man.name, employees))
+}
+
+
+//findManagementChainFor('shep Jr.', employeeArr)
