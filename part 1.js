@@ -8,7 +8,12 @@ const employees = [
   { id: 8, name: 'shep Jr.', managerId: 4 },
   { id: 99, name: 'lucy', managerId: 1 }
 ]
+// good parameter names! having them equal what they are makes a ton of sense!!
 const findEmployeeByName = (empName, employees) => {
+  // so what is element? is it an element of any kind of array? can this be changed?
+  // also, filter returns an array but the method should return a single element
+  // maybe there's an array method that behaves like filter (with the matcher function)
+  // but stops at the first element found? there is! take a look at documentation on the .find method
   return employees.filter((element) => {
     if (element.name === empName) {
       return element
@@ -16,6 +21,10 @@ const findEmployeeByName = (empName, employees) => {
   })[0]
 }
 
+// so what is being passed in here? make sure you check to see what stuff the function is getting
+// because the first parameter isn't a name anymore, it's an employee object!
+// you don't have to find by name again
+// other than that, same comments as above
 const findManagerFor = (empName, employees) => {
   let emp = findEmployeeByName(empName, employees)
   return employees.filter((element) => {
@@ -26,7 +35,9 @@ const findManagerFor = (empName, employees) => {
 }
 
 //findManagerFor('shep Jr.', employeeArr)
-
+// correct use of filter here!, wanting to return an array
+// I like your condtiional checks but what if two employees shared the same name
+// is there a unique identifier for each employee you can use instead?
 const findCoworkersFor = (empName, employees) => {
   let emp = findEmployeeByName(empName, employees)
   return employees.filter((element) => {
@@ -38,16 +49,19 @@ const findCoworkersFor = (empName, employees) => {
 
 //findCoworkersFor('larry', employeeArr)
 
-const findManagementChainFor = (empName, employees) => {
+// similar idea
+const findManagementChainForEmployee = (empName, employees) => {
   //recursive case - manID = 1
   if (findEmployeeByName(empName, employees).managerId === 1) {
     return findManagerFor(empName, employees)
   }
+  // be careful with man here. you didn't put an identifier so it became var
   else { man = findManagerFor(empName, employees) }
-  return [man].concat(findManagementChainFor(man.name, employees))
+  // good idea using concat and recursion!
+  return [man].concat(findManagementChainForEmployee(man, employees))
 }
 
-
+// breaking out your smaller funcs! I like it! makes it more readable
 const findTopMan = (employees) => {
   return employees.filter((element) => {
     if (!element.managerId) return element
@@ -76,7 +90,13 @@ generateManagementTree = (oEmployees) => {
   let employees = generateReportsArr(oEmployees)
   let topMan = findTopMan(oEmployees)
 
-
+  // I think the approach here is right, go through each employee
+  // find their manager
+  // add that employee to the manager's reports
+  // ^ if you write some pseudo code like this, it goes a long way
+  // and it's a good start to make sure you're on the right path
+  // I'm not sure reduce is needed here and I think it may complicate things
+  // but overall looks correct!
   return employees.reduce((accum, empElem) => {
     let man = findManagerFor(empElem.name, employees)
     if (empElem.managerId) {
