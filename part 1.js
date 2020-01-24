@@ -8,7 +8,6 @@ const employees = [
   { id: 8, name: 'shep Jr.', managerId: 4 },
   { id: 99, name: 'lucy', managerId: 1 }
 ]
-
 const findEmployeeByName = (empName, employees) => {
   return employees.filter((element) => {
     if (element.name === empName) {
@@ -49,7 +48,43 @@ const findManagementChainFor = (empName, employees) => {
 }
 
 
-//findManagementChainFor('shep Jr.', employeeArr)
+const findTopMan = (employees) => {
+  return employees.filter((element) => {
+    if (!element.managerId) return element
+  })[0]
+}
+
+//findTopMan(employeeArr)
+// findManagementChainFor('shep Jr.', employeeArr)
+// const generateManagementTree(employees){
+//   return {}
+
+// }
+
+const generateReportsArr = (employees) => {
+  employees.forEach((element) => element.reports = [])
+  return employees
+}
+
+//   return employees.reduce(accum, empElem) => {
+//     if (empElem.managerId){
+//       empElem
+//     }
+//   }
+// }
+generateManagementTree = (oEmployees) => {
+  let employees = generateReportsArr(oEmployees)
+  let topMan = findTopMan(oEmployees)
+
+
+  return employees.reduce((accum, empElem) => {
+    let man = findManagerFor(empElem.name, employees)
+    if (empElem.managerId) {
+      man.reports.push((empElem))
+    }
+    return accum
+  }, [topMan])
+}
 
 
 const spacer = (text) => {
